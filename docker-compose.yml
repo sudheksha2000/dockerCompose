@@ -19,11 +19,8 @@ services:
 
 
   api_gateway:
-    build:
-      context: ./../api_gateway
-      dockerfile: ./../api_gateway/api_gateway.dockerfile
-    container_name: gateway
     image: "sudheksha/signin"
+    container_name: gateway
     restart: always
     ports:
       - "8001:8001"
@@ -37,9 +34,7 @@ services:
 
 
   add_products:
-    build:
-      context: ./../add_products
-      dockerfile: ./../add_products/add_products.dockerfile
+    image: "sudheksha/add_products"
     container_name: addProducts
     restart: always
     ports:
@@ -54,9 +49,7 @@ services:
 
 
   get_products:
-    build:
-      context: ./../get_products
-      dockerfile: ./../get_products/get_products.dockerfile
+    image: "sudheksha/get_products"
     container_name: getProducts
     restart: always
     ports:
@@ -70,9 +63,7 @@ services:
       DB: BOOKS
 
   order_products:
-    build:
-      context: ./../order_products
-      dockerfile: ./../order_products/order_products.dockerfile
+    image: "sudheksha/order_products"
     container_name: orderProducts
     restart: always
     ports:
