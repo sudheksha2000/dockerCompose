@@ -4,32 +4,35 @@ services:
    
   mysqlDB:
     image: mysql:latest
-    container_name: myDB
     restart: always
+    expose:
+      - "3306"
     deploy:
-      mode: replicated
-      replicas: 1
+      placement:
     environment:
       MYSQL_ROOT_PASSWORD: "root" 
+      MYSQL_DATABASE: "BOOKS"
+      MYSQL_USER: "sudhi"
+      MYSQL_PASSWORD: "root"
     ports:
       - "3306:3306"
     volumes:
       - ./data/mysql/:/var/lib/mysql
-      - ./../db.sql:/docker-entrypoint-initdb.d/init.sql
-
 
   api_gateway:
     image: "sudheksha/signin"
     container_name: gateway
     restart: always
+    expose:
+      - "8001"
     ports:
       - "8001:8001"
     deploy:
-      mode: replicated
-      replicas: 1
+      placement:
     environment:
-      DB_HOST: myDB
-      USER: root
+      DB_HOST: mysqlDB
+      USER: sudhi
+      PASSWORD: root
       DB: BOOKS
 
 
@@ -37,14 +40,16 @@ services:
     image: "sudheksha/add_products"
     container_name: addProducts
     restart: always
+    expose:
+      - "8003"
     ports:
       - "8003:8003"
     deploy:
-      mode: replicated
-      replicas: 1
+      placement:
     environment:
-      DB_HOST: myDB
-      USER: root
+      DB_HOST: mysqlDB
+      USER: sudhi
+      PASSWORD: root
       DB: BOOKS
 
 
@@ -52,25 +57,33 @@ services:
     image: "sudheksha/get_products"
     container_name: getProducts
     restart: always
+    expose:
+      - "8002"
     ports:
       - "8002:8002"
     deploy:
-      mode: replicated
-      replicas: 1
+      placement:
     environment:
-      DB_HOST: myDB
-      USER: root
+      DB_HOST: mysqlDB
+      USER: sudhi
+      PASSWORD: root
       DB: BOOKS
 
   order_products:
     image: "sudheksha/order_products"
     container_name: orderProducts
     restart: always
+    environment:
+      DB_HOST: mysqlDB
+      USER: sudhi
+      PASSWORD: root
+      DB: BOOKS
+    expose:
+      - "8010"
     ports:
       - "8010:8010"
     deploy:
-      mode: replicated
-      replicas: 1
+      placement:
 
 
 
